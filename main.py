@@ -1,5 +1,5 @@
 from testGagnant import testGagnant
-import random
+
 from testValid import watPos
 
 #plateaux=[[random.randrange(0,3) for x in range(7)] for y in range(6)]
@@ -41,6 +41,6 @@ while inp!="q":
         else:
             print('Erreur fatale')
 
-    
+  
     
     
