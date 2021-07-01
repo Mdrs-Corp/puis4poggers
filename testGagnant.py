@@ -18,6 +18,40 @@ pll[6][0]=2
 pll[5][1]=2
 pll[4][2]=2
 pll[3][3]=2
+for gjhk in pll:
+    print(gjhk)
+def from_begin(x,y,pl=1,ls=pll):
+    '''Trouve depuis un bout si y'a un puis4 quelque soit le sens'''
+    for fd in [[0,1],[0,-1],[1,0],[1,1],[1,-1],[-1,0],[-1,1],[-1,-1]]:
+        cx,cy=x+fd[0],y+fd[1]
+        puis=1
+        while cx>=0 and cy>=0 and cx<6 and cy<7 and puis<5:
+            
+            if ls[cy][cx]==pl:
+                puis+=1
+                cx+=fd[0]
+                cy+=fd[1]
+                
+            else:
+                print(cx,cy)
+                cx=-1 #quitter si ce n'est plus le player
+                
+        if puis==4:
+            return True
+    return False
+def check(x,y,carte):
+    '''aller chercher mle bout de la ligne'''
+    pl=carte[y][x]
+    mv=[x,y]
+    for move in [[0,1],[0,-1],[1,0],[1,1],[1,-1],[-1,0],[-1,1],[-1,-1]]:
+        while mv[0]>=0 and mv[1]>=0 and mv[0]<6 and mv[1]<7:
+            if carte[mv[1]][mv[0]]==pl:
+                mv[0]+=move[0]
+                mv[1]+=move[1]
+            else:
+                mv[0]=-1
+    return from_begin(mv[0],mv[1],pl,carte)
+            
 def testGagnant(pl,x,y):
     #verticale
     n=0
