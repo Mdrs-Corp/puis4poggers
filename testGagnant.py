@@ -25,7 +25,7 @@ def from_begin(x,y,pl=1,ls=pll):
     for fd in [[0,1],[0,-1],[1,0],[1,1],[1,-1],[-1,0],[-1,1],[-1,-1]]:
         cx,cy=x+fd[0],y+fd[1]
         puis=1
-        while cx>=0 and cy>=0 and cx<6 and cy<7 and puis<5:
+        while cx>=0 and cy>=0 and cx<len(ls[0]) and cy<len(ls) and puis<5:
             
             if ls[cy][cx]==pl:
                 puis+=1
@@ -33,24 +33,29 @@ def from_begin(x,y,pl=1,ls=pll):
                 cy+=fd[1]
                 
             else:
-                print(cx,cy)
                 cx=-1 #quitter si ce n'est plus le player
                 
         if puis==4:
             return True
     return False
 def check(x,y,carte):
-    '''aller chercher mle bout de la ligne'''
+    '''aller chercher le bout de la ligne'''
     pl=carte[y][x]
-    mv=[x,y]
+    mvx,mvy=x,y
+    l=[]
     for move in [[0,1],[0,-1],[1,0],[1,1],[1,-1],[-1,0],[-1,1],[-1,-1]]:
-        while mv[0]>=0 and mv[1]>=0 and mv[0]<6 and mv[1]<7:
-            if carte[mv[1]][mv[0]]==pl:
-                mv[0]+=move[0]
-                mv[1]+=move[1]
+        while mvx>=0 and mvy>=0 and mvx<len(carte[0]) and mvy<len(carte):
+            if carte[mvy][mvx]==pl:
+                mvx+=move[0]
+                mvy+=move[1]
             else:
-                mv[0]=-1
-    return from_begin(mv[0],mv[1],pl,carte)
+                mvx=-1
+        if from_begin(mvx,mvy,pl,carte):
+            print('paths')
+            return mvx,mvy,x,y,'found'
+        else:
+            l.append((mvx,mvy))
+    return l
             
 def testGagnant(pl,x,y):
     #verticale
