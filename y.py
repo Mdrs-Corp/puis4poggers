@@ -71,20 +71,29 @@ def check(board, v):
         m = max(m, c)
     return m
 
-def minmax(board, v, d):
+def minmax(board, v, g, d):
+    if d == 0:
+        if check(board, v) >= 4:
+            if v == g:
+                return 1, 0
+            else:
+                return -1, 0
+        else:
+            return 0, 0
     moves = []
     for i in range(7):
         cpboard = [i[:] for i in board]
         play(cpboard, i, v)
-        if check(cpboard, v) >= 4:
-            moves.append(1)
-        else:
-            moves.append(0)
-    m = max(moves)
+        moves.append(minmax(cpboard, -v, g, d-1)[0])
+    if v == g:
+        m = max(moves)
+    else:
+        m = min(moves)
     c = []
     for i in range(len(moves)):
-        print("yes")
-    return m
+        if moves[i] == m:
+            c.append(i)
+    return m, random.choice(c)
     
     
 
@@ -98,7 +107,7 @@ while playing:
     if player == -1:
         p = "O"
     if player == -1:
-        inp = str(minmax(board, player, 1))
+        inp = str(minmax(board, -player, player, 2)[1])
     else:
         inp = input(p+" > ")
     if inp.isnumeric():
